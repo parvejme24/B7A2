@@ -19,4 +19,8 @@ async function start(): Promise<void> {
   });
 }
 
-start();
+if (!process.env.VERCEL) {
+  start();
+}
+
+export default app;

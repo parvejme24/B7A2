@@ -107,10 +107,24 @@ export function validateUpdateIssue(body: UpdateIssueBody): UpdateIssueBody {
     updates.type = body.type;
   }
 
+  if (body.status !== undefined) {
+    if (
+      body.status !== "open" &&
+      body.status !== "in_progress" &&
+      body.status !== "resolved"
+    ) {
+      throw new BadRequestError(
+        "Status must be open, in_progress, or resolved"
+      );
+    }
+    updates.status = body.status;
+  }
+
   if (
     updates.title === undefined &&
     updates.description === undefined &&
-    updates.type === undefined
+    updates.type === undefined &&
+    updates.status === undefined
   ) {
     throw new BadRequestError("At least one field must be provided to update");
   }

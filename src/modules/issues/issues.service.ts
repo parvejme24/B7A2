@@ -135,6 +135,10 @@ export async function updateIssue(
 
   const issue = existing.rows[0];
 
+  if (updates.status !== undefined && user.role !== "maintainer") {
+    throw new ForbiddenError("Only maintainers can change issue status");
+  }
+
   if (user.role !== "maintainer") {
     if (issue.reporter_id !== user.id) {
       throw new ForbiddenError(
@@ -149,7 +153,8 @@ export async function updateIssue(
   }
 
   const fields: string[] = [];
-  const values: (string | IssueRow["type"] | number)[] = [];
+  const values: (string | IssueRow["type"] | IssueRow["status"] | number)[] =
+    [];
   let paramIndex = 1;
 
   if (updates.title !== undefined) {
@@ -163,6 +168,10 @@ export async function updateIssue(
   if (updates.type !== undefined) {
     fields.push(`type = $${paramIndex++}`);
     values.push(updates.type);
+  }
+  if (updates.status !== undefined) {
+    fields.push(`status = $${paramIndex++}`);
+    values.push(updates.status);
   }
 
   fields.push("updated_at = NOW()");

@@ -30,7 +30,7 @@ export async function getAllIssues(req: Request, res: Response): Promise<void> {
     status: parseIssueStatus(req.query.status as string | undefined),
   };
   const issues = await issuesService.getAllIssues(params);
-  sendSuccess(res, StatusCodes.OK, issues);
+  sendSuccess(res, StatusCodes.OK, issues, "Issues retrived successfully");
 }
 
 function parseIdParam(idParam: string | string[]): number {
@@ -48,7 +48,7 @@ export async function getIssueById(req: Request, res: Response): Promise<void> {
     return;
   }
   const issue = await issuesService.getIssueById(id);
-  sendSuccess(res, StatusCodes.OK, issue);
+  sendSuccess(res, StatusCodes.OK, issue, "Issue retrived successfully");
 }
 
 export async function updateIssue(req: Request, res: Response): Promise<void> {

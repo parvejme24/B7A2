@@ -79,6 +79,7 @@ export interface UpdateIssueBody {
   title?: string;
   description?: string;
   type?: IssueType;
+  status?: IssueStatus;
 }
 
 export interface IssuesQueryParams {
